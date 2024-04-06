@@ -9,6 +9,7 @@
 
 #include <vector>
 
+#include "aictl.hpp"
 
 std::string executePythonScript(std::string venvdir, std::string pydir, std::vector<std::string> args) {
     std::string response;

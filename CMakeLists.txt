@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0)
 project(HonyakuBot)
 
 set(CMAKE_CXX_STANDARD 17)
-
+include_directories(app)
 
 # Add executable
 add_executable(HonyakuBot app/aictl.cpp)
