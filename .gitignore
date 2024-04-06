@@ -6,3 +6,8 @@ venv
 # Custom
 temp.txt
 *.wav
+
+
+# Build files
+*.o
+build
