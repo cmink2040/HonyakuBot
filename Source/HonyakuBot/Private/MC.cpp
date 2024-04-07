@@ -1,5 +1,4 @@
 #include "MC.h"
-#include "GameFramework/FloatingPawnMovement.h"
 #include "GameFramework/Pawn.h"
 
 #include "Camera/CameraComponent.h"
@@ -33,20 +32,38 @@ void AMC::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
     // Bind input axes for movement
     PlayerInputComponent->BindAxis("MoveForward", this, &AMC::MoveForward);
     PlayerInputComponent->BindAxis("MoveRight", this, &AMC::MoveRight);
+ 
+    PlayerInputComponent->BindAxis("MoveBackward", this, &AMC::MoveBackward);
+    PlayerInputComponent->BindAxis("MoveLeft", this, &AMC::MoveLeft);
 }
 
 void AMC::MoveForward(float Value)
 {
     // Calculate movement direction
-    FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
+    const FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
     CurrentVelocity = Direction * Value * MoveSpeed;
 }
 
 void AMC::MoveRight(float Value)
 {
     // Calculate movement direction
-    FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
+    const FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
     CurrentVelocity = Direction * Value * MoveSpeed;
+}
+
+
+void AMC::MoveBackward(float Value)
+{
+    // Calculate movement direction
+    const FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
+    CurrentVelocity = Direction * Value * MoveSpeed * -1;
+}
+
+void AMC::MoveLeft(float Value)
+{
+    // Calculate movement direction
+    const FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
+    CurrentVelocity = Direction * Value * MoveSpeed * -1;
 }
 
 void AMC::Tick(float DeltaTime)
@@ -54,6 +71,6 @@ void AMC::Tick(float DeltaTime)
     Super::Tick(DeltaTime);
 
     // Apply movement
-    FVector NewLocation = GetActorLocation() + (CurrentVelocity * DeltaTime);
+    const FVector NewLocation = GetActorLocation() + (CurrentVelocity * DeltaTime);
     SetActorLocation(NewLocation);
 }

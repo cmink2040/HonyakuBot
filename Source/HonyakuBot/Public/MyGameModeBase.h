@@ -15,6 +15,6 @@ class HONYAKUBOT_API AMyGameModeBase : public AGameModeBase
 	GENERATED_BODY()
 
 	public:
-		virtual void BeginPlay() override;
-	};
-	
+	virtual void BeginPlay() override;
+
+};

@@ -30,11 +30,15 @@ public:
 	void MoveForward(float Value);
 	void MoveRight(float Value);
 
+	
+	void MoveLeft(float Value);
+	void MoveBackward(float Value);
+
 	UPROPERTY(EditAnywhere)
 	USceneComponent* OurVisibleComponent;
 private:
 
 	FVector CurrentVelocity;
-	float MoveSpeed = 100.0f; // Adjust this to control movement speed
+	float MoveSpeed = 1000.0f; // Adjust this to control movement speed
 
 };
