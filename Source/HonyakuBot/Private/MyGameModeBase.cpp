@@ -18,7 +18,8 @@ void AMyGameModeBase::BeginPlay()
     
     TArray<AMC*> ExistingPawns;
     UGameplayStatics::GetAllActorsOfClass(GetWorld(), APawn::StaticClass(), AllActors);
-  
+  :
+	
     // Check if there's at least one existing pawn of the specified class
     if (ExistingPawns.Num() > 0)
     {
