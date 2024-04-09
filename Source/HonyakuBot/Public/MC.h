@@ -3,11 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Pawn.h"
+#include "GameFramework/Character.h"
+#include "InputAction.h"
+#include "InputMappingContext.h"
 #include "MC.generated.h"
 
 UCLASS()
-class HONYAKUBOT_API AMC : public APawn
+class HONYAKUBOT_API AMC : public ACharacter
 {
 	GENERATED_BODY()
 
@@ -18,6 +20,10 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	//virtual void BeginPlay() override;
+	
+	void InputMove(const FInputActionValue& Value);
+	
+
 
 public:	
 	// Called every frame
@@ -26,19 +32,19 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Enhanced Input")
+	UInputAction* inputMove;
 
-	void MoveForward(float Value);
-	void MoveRight(float Value);
-
-	
-	void MoveLeft(float Value);
-	void MoveBackward(float Value);
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Enhanced Input")
+	UInputMappingContext* inputMappingContext;
 
 	UPROPERTY(EditAnywhere)
 	USceneComponent* OurVisibleComponent;
 private:
 
-	FVector CurrentVelocity;
+	FVector CurrentVelocityX;
+	FVector CurrentVelocityY;
+
 	float MoveSpeed = 1000.0f; // Adjust this to control movement speed
 
 };

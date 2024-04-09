@@ -18,7 +18,7 @@ void AMyGameModeBase::BeginPlay()
     
     TArray<AMC*> ExistingPawns;
     UGameplayStatics::GetAllActorsOfClass(GetWorld(), APawn::StaticClass(), AllActors);
-  :
+
 	
     // Check if there's at least one existing pawn of the specified class
     if (ExistingPawns.Num() > 0)
@@ -29,7 +29,6 @@ void AMyGameModeBase::BeginPlay()
         // Now you have a reference to the existing pawn and you can use it as needed
         
         // Spawn and possess the pawn
-        AMC* NewPawn = GetWorld()->SpawnActor<AMC>(AMC::StaticClass(), FVector::ZeroVector, FRotator::ZeroRotator);
         APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
         PlayerController->Possess(ExistingPawn);
     }
