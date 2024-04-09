@@ -6,23 +6,42 @@
 #include "GameFramework/Character.h"
 #include "InputAction.h"
 #include "InputMappingContext.h"
-#include "MC.generated.h"
+#include "Camera/CameraComponent.h"
+#include "Main.generated.h"
 
 UCLASS()
-class HONYAKUBOT_API AMC : public ACharacter
+class HONYAKUBOT_API AMain : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this pawn's properties
-	AMC();
+	AMain();
 
 protected:
 	// Called when the game starts or when spawned
 	//virtual void BeginPlay() override;
 	
 	void InputMove(const FInputActionValue& Value);
+
+	void CamLook(const FInputActionValue& Value);
+
 	
+
+	UPROPERTY(EditAnywhere, Category="Set Up")
+	USceneComponent* VisibleMesh;
+	
+	UPROPERTY(EditAnywhere, Category="Set Up");
+	UCameraComponent* CameraComponent;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Enhanced Input")
+	UInputAction* inputMove;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Enhanced Input")
+	UInputAction* Look;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Enhanced Input")
+	UInputMappingContext* inputMappingContext;
 
 
 public:	
@@ -32,19 +51,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Enhanced Input")
-	UInputAction* inputMove;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Enhanced Input")
-	UInputMappingContext* inputMappingContext;
-
-	UPROPERTY(EditAnywhere)
-	USceneComponent* OurVisibleComponent;
+	
 private:
-
-	FVector CurrentVelocityX;
-	FVector CurrentVelocityY;
-
-	float MoveSpeed = 1000.0f; // Adjust this to control movement speed
 
 };
