@@ -23,6 +23,7 @@ void AMyGameModeBase::BeginPlay()
     // Check if there's at least one existing pawn of the specified class
     if (ExistingPawns.Num() > 0)
     {
+        
         // Get the first existing pawn found
         AMain* ExistingPawn = ExistingPawns[0];
     

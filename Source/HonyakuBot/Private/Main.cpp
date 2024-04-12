@@ -4,9 +4,12 @@
 #include "Camera/CameraComponent.h"
 #include "EnhancedInputComponent.h"
 
+#include "STerminal.h"
 
 #include "EnhancedInputSubsystems.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
+
 
 AMain::AMain()
 {
@@ -16,6 +19,8 @@ AMain::AMain()
     // Set this pawn to be controlled by the lowest-numbered player
     AutoPossessPlayer = EAutoReceiveInput::Player0;
 
+    GUIOpen = false;
+
     // Create a dummy root component we can attach things to.
     // Create a camera and a visible object
     CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
@@ -23,8 +28,11 @@ AMain::AMain()
     // Attach our camera and visible object to our root component. Offset and rotate the camera.
 
     CameraComponent->AttachToComponent(GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+    
     VisibleMesh->AttachToComponent(GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
 
+    MySlateWidget =  SNew(STerminal);
+ 
 
 
 }
@@ -38,21 +46,35 @@ void AMain::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
     //Add the input mapping context
     eiSubsystem->AddMappingContext(inputMappingContext, 0);
     UEnhancedInputComponent* enhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent);
+    
     enhancedInputComponent->BindAction(inputMove, ETriggerEvent::Triggered , this, &AMain::InputMove);
-
     enhancedInputComponent->BindAction(Look, ETriggerEvent::Triggered , this, &AMain::CamLook);
+    enhancedInputComponent->BindAction(OpenUI, ETriggerEvent::Triggered , this, &AMain::Interact);
+
 
 }
 void AMain::CamLook(const FInputActionValue& Value)
 {
     
+    const FVector2d rotateVec = Value.Get<FVector2d>();
+
+ 
+    // Get the current position and rotation of the camera
+    // Calculate new rotation
+    if ( ! GUIOpen)
+    {
+        AddControllerYawInput(rotateVec.X);
+        AddControllerPitchInput(rotateVec.Y);
+    }
+
 }
 
 void AMain::InputMove(const FInputActionValue& Value)
 {
     UE_LOG(LogTemp, Display, TEXT("Float Key: %f %f"), Value.Get<FVector2d>().X, Value.Get<FVector2d>().Y);
-
-    const FVector2d moveVec = Value.Get<FVector2d>();
+    if ( ! GUIOpen)
+    {
+        const FVector2d moveVec = Value.Get<FVector2d>();
 
         const FVector DirectionX = FRotator(0.0f, Controller -> GetControlRotation().Yaw, Controller -> GetControlRotation().Roll).RotateVector(FVector::RightVector);
         AddMovementInput(DirectionX, moveVec.X);
@@ -62,8 +84,7 @@ void AMain::InputMove(const FInputActionValue& Value)
         AddMovementInput(DirectionY, moveVec.Y);
 
         this->GetCharacterMovement()->MaxWalkSpeed = 800.f;
-
-
+    }
         
         // Move forward logic
         // Example: Move the pawn forward
@@ -74,6 +95,39 @@ void AMain::InputMove(const FInputActionValue& Value)
 
     
 }
+
+void AMain::Interact(const FInputActionValue& Value)
+{
+    const bool pressed = Value.Get<bool>();
+    UE_LOG(LogTemp, Display, TEXT("Float Key: %o %o "), Value.Get<bool>(), GUIOpen);
+
+    if ( pressed && !GUIOpen )
+    {
+
+        GUIOpen = true;
+        if (GEngine && GEngine->GameViewport)
+        {
+            GEngine->GameViewport->AddViewportWidgetContent(MySlateWidget.ToSharedRef());
+            UGameplayStatics::GetPlayerController(GetWorld(), 0)->bShowMouseCursor = true;
+
+        }
+  
+    }
+
+    else
+    {
+        GUIOpen = false;
+        if (GEngine && GEngine->GameViewport)
+        {
+            GEngine->GameViewport->RemoveViewportWidgetContent(MySlateWidget.ToSharedRef());
+            UGameplayStatics::GetPlayerController(GetWorld(), 0)->bShowMouseCursor = false;
+
+        }
+    }
+
+    
+}
+
 void AMain::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);

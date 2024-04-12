@@ -7,6 +7,11 @@
 #include "InputAction.h"
 #include "InputMappingContext.h"
 #include "Camera/CameraComponent.h"
+
+
+#include "STerminal.h"
+
+
 #include "Main.generated.h"
 
 UCLASS()
@@ -21,13 +26,17 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	//virtual void BeginPlay() override;
-	
 	void InputMove(const FInputActionValue& Value);
 
 	void CamLook(const FInputActionValue& Value);
 
-	
+	void Interact(const FInputActionValue& Value);
 
+	bool GUIOpen = false;
+
+	TSharedPtr<STerminal> MySlateWidget;
+
+	
 	UPROPERTY(EditAnywhere, Category="Set Up")
 	USceneComponent* VisibleMesh;
 	
@@ -41,8 +50,12 @@ protected:
 	UInputAction* Look;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Enhanced Input")
+	UInputAction* OpenUI;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Enhanced Input")
 	UInputMappingContext* inputMappingContext;
 
+	
 
 public:	
 	// Called every frame
