@@ -4,7 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+
+#include "Main.h"
+#include "UI/InterfaceHUD.h"
 #include "MyGameModeBase.generated.h"
+
 
 /**
  * 
@@ -17,4 +21,7 @@ class HONYAKUBOT_API AMyGameModeBase : public AGameModeBase
 	public:
 	virtual void BeginPlay() override;
 
+private:
+	 TSharedPtr<AInterfaceHUD> MySlateUI;
+	 AMain* ExistingPawn; 
 };

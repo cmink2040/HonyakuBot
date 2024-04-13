@@ -1,5 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+
+#include "aictl.h"
 #include <string>
 #include <Python.h>
 
@@ -8,8 +10,6 @@
 
 #include <cstdlib>  // For system() function
 
-
-#include "aictl.h"
 
 FString Aictl::aictl(const char* venvdir, const char* pypath, const char* pydir, TArray<const char*> args) {
     // setenv("PYTHONPATH",pypath.c_str(), 1);

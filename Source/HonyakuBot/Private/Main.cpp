@@ -4,7 +4,7 @@
 #include "Camera/CameraComponent.h"
 #include "EnhancedInputComponent.h"
 
-#include "STerminal.h"
+#include "UI/STerminal.h"
 
 #include "EnhancedInputSubsystems.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -32,6 +32,8 @@ AMain::AMain()
     VisibleMesh->AttachToComponent(GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
 
     MySlateWidget =  SNew(STerminal);
+    
+    Health = 100.0f;
  
 
 

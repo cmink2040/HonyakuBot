@@ -4,11 +4,9 @@
 #include "MyGameModeBase.h"
 #include "Main.h"
 #include "GameFramework/PlayerController.h"
+
+#include "UI/InterfaceHUD.h"
 #include "Kismet/GameplayStatics.h"
-
-
-
-
 void AMyGameModeBase::BeginPlay()
 {
     Super::BeginPlay();
@@ -17,21 +15,28 @@ void AMyGameModeBase::BeginPlay()
     TArray<AActor*> AllActors;
     
     TArray<AMain*> ExistingPawns;
-    UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACharacter::StaticClass(), AllActors);
+    UGameplayStatics::GetAllActorsOfClass(GetWorld(), AMain::StaticClass(), AllActors);
+	UE_LOG(LogTemp, Warning, TEXT("HTEST TEST 1"));
 
-	
-    // Check if there's at least one existing pawn of the specified class
-    if (ExistingPawns.Num() > 0)
-    {
-        
-        // Get the first existing pawn found
-        AMain* ExistingPawn = ExistingPawns[0];
-    
-        // Now you have a reference to the existing pawn and you can use it as needed
-        
-        // Spawn and possess the pawn
-        APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-        PlayerController->Possess(ExistingPawn);
-    }
+	UE_LOG(LogTemp, Warning, TEXT("ExistingPawn %d"),GetWorld()->GetActorCount());
+
+	APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	if (PC)
+	{
+		AMain* PlayerCharacter = Cast<AMain>(PC->GetPawn());
+		if (PlayerCharacter)
+		{
+			ExistingPawn = PlayerCharacter;
+			UE_LOG(LogTemp, Warning, TEXT("HM %f"), ExistingPawn->GetHealth());
+			UE_LOG(LogTemp, Warning, TEXT("HTEST TEST 2"));
+			MySlateUI = SNew(AInterfaceHUD).PlayerCharacter(MakeWeakObjectPtr(ExistingPawn));
+
+			GEngine->GameViewport->AddViewportWidgetContent(MySlateUI.ToSharedRef());
+			PC->Possess(ExistingPawn);
+
+
+		}
+	}
+   
 }
 

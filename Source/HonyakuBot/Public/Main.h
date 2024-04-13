@@ -9,7 +9,7 @@
 #include "Camera/CameraComponent.h"
 
 
-#include "STerminal.h"
+#include "UI/STerminal.h"
 
 
 #include "Main.generated.h"
@@ -22,6 +22,8 @@ class HONYAKUBOT_API AMain : public ACharacter
 public:
 	// Sets default values for this pawn's properties
 	AMain();
+	float GetHealth() const { return Health; }
+	void SetHealth(float f) {Health=f;}
 
 protected:
 	// Called when the game starts or when spawned
@@ -64,7 +66,10 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+
 	
 private:
 
+float Health;
+	
 };
