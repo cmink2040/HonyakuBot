@@ -34,7 +34,7 @@ AMain::AMain()
     MySlateWidget =  SNew(STerminal);
     
     Health = 100.0f;
- 
+    MAXHealth = 100.0f;
 
 
 }
@@ -73,7 +73,7 @@ void AMain::CamLook(const FInputActionValue& Value)
 
 void AMain::InputMove(const FInputActionValue& Value)
 {
-    UE_LOG(LogTemp, Display, TEXT("Float Key: %f %f"), Value.Get<FVector2d>().X, Value.Get<FVector2d>().Y);
+    // UE_LOG(LogTemp, Display, TEXT("Float Key: %f %f"), Value.Get<FVector2d>().X, Value.Get<FVector2d>().Y);
     if ( ! GUIOpen)
     {
         const FVector2d moveVec = Value.Get<FVector2d>();

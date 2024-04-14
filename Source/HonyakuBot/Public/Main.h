@@ -71,5 +71,6 @@ public:
 private:
 
 float Health;
+float MAXHealth;
 	
 };
